@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "weather"
+    }
+  },
+  "defaultProject": "weather",
+  "cli": {
+    "analytics": "6df0841b-9305-4814-bb76-16497d3b9019"
+  }
 }

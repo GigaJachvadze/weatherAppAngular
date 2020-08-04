@@ -1,0 +1,10 @@
+<div class="main_show">
+    <h1 class="text_main textWhite textCentre">{{this.main.name}}</h1>
+    <img class="img_main" src="http://openweathermap.org/img/wn/{{this.main.weather[0].icon}}@2x.png">
+    <p class="text_main textWhite textCentre">ტემპერატურა: {{this.main.main.feels_like | number:'1.0-0'}}°</p>
+    <p class="textWhite textCentre">ტენიანობა: {{this.main.main.humidity}}%</p>
+    <p class="textWhite textCentre">წნევა: {{this.main.main.pressure}}hPa</p>
+    <p class="textWhite textCentre">ქარის სიჩქარე: {{this.main.wind.speed}}m/s</p>
+</div>
+
+<app-slideshow></app-slideshow>
