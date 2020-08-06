@@ -1,8 +1,7 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { DataServiceService } from '../data-service.service'
-import { SharedDataService } from '../shared-data.service'
-
+import { SlideshowComponent } from './slideshow/slideshow.component';
 
 @Component({
   selector: 'app-main',
@@ -19,7 +18,9 @@ export class MainComponent implements OnInit {
   key: string = "e5a5658899eeb74364a64621ced3af51";
   unit: string = "units=metric";
 
-  constructor(private service: DataServiceService, private dataService: SharedDataService) { }
+  @ViewChild(SlideshowComponent) child:SlideshowComponent;
+
+  constructor(private service: DataServiceService) { }
 
   ngOnInit(): void {
     this.mainFunction();
@@ -54,31 +55,16 @@ export class MainComponent implements OnInit {
       }
     }
     this.data = sortedData;
-    this.sendData();
-    this.reciveMain();
+    this.setMainD();
   }
 
-  sendData(): void{
-    this.dataService.setCities(this.cities);
-    this.dataService.setData(this.data);
-  }
-
-  reciveMain(): void{
-    this.mainSelected = this.dataService.getMainIndex();
+  setMainD(): void{
+    if(!this.mainSelected){
+      this.mainSelected = 0;
+    }
     this.main = this.data[this.mainSelected];
     this.renameData();
   }
-
-  // selection(n: number): void{
-  //   if (n === -1){
-  //     this.mainSelected = 0;
-  //     this.main = this.data[this.mainSelected];
-  //   }
-  //   else{
-  //     this.mainSelected = n;
-  //     this.main = this.data[this.mainSelected];
-  //   }
-  // }
 
   renameData(): void{
     for (let i = 0; i < this.data.length; i++) {
@@ -105,5 +91,16 @@ export class MainComponent implements OnInit {
         break;
       };
     }
+  }
+
+  ngAfterViewInit() {
+    this.child.mainFunction(this.mainSelected);
+  }
+
+  mainChange(selected): void{
+    this.mainSelected = this.data.indexOf(selected);
+    this.main = this.data[this.mainSelected];
+
+    this.ngAfterViewInit();
   }
 }

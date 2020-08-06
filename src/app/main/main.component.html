@@ -7,4 +7,4 @@
     <p class="textWhite textCentre">ქარის სიჩქარე: {{this.main.wind.speed}}m/s</p>
 </div>
 
-<app-slideshow></app-slideshow>
+<app-slideshow [data]="data" (mainChangeEvent)="mainChange($event)"></app-slideshow>

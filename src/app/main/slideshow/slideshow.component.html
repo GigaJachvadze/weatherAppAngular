@@ -1,6 +1,6 @@
 <div class="MAIN_CONTAINER">
     <a id="prev" (click)="pageSelect(-1);">&#10094;</a>
-    <div *ngFor="let data of pageData[currentPage]">
+    <div class="pointer defualtAnim items" (click)="selectMain(data)" *ngFor="let data of pageData[currentPage]">
         <h3 class="textWhite textCentre">{{data.name}}</h3>
         <img src="http://openweathermap.org/img/wn/{{data.weather[0].icon}}@2x.png">
         <p class="textWhite textCentre">ტემპერატურა: {{data.main.feels_like | number:'1.0-0'}}°</p>

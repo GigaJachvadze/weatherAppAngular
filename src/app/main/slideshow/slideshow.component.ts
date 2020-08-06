@@ -1,6 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
-import { SharedDataService } from 'src/app/shared-data.service';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef  } from '@angular/core';
 
 @Component({
   selector: 'app-slideshow',
@@ -8,29 +6,36 @@ import { SharedDataService } from 'src/app/shared-data.service';
   styleUrls: ['./slideshow.component.scss']
 })
 export class SlideshowComponent implements OnInit {
-  mainSelected: number = 0;
   slidesOnOnePage: number = 3;
 
   currentPage: number;
+  selected: number;
   maxPage: number;
 
-  dataWithoutMain: Array<any>;
+  dataWithoutMain: Array<any> = [];
   pageData: Array<any> = [];
 
-  constructor(private dataService: SharedDataService) { }
+  @Input() data: Array<any>;
+  @Output() mainChangeEvent = new EventEmitter();
+
+  constructor(private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.mainFunction();
   }
 
-  mainFunction(): void{
+  mainFunction(selected): void{
+    this.selected = selected;
     this.getDataWithoutMain();
+    this.ref.detectChanges();
   }
 
   getDataWithoutMain(): void{
-    this.dataWithoutMain = this.dataService.getData();
-
-    this.dataWithoutMain.splice(this.mainSelected, 1);
+    this.dataWithoutMain = [];
+    for (let i = 0; i < this.data.length; i++) {
+      if(i != this.selected){
+        this.dataWithoutMain.push(this.data[i]);
+      }
+    }
     this.calculateMaxPages();
   }
 
@@ -63,9 +68,13 @@ export class SlideshowComponent implements OnInit {
 
   calculatePages(): void{
     //calculate wich data to show
+    this.pageData = [];
     for (let i = 0; i < this.dataWithoutMain.length; i+= this.slidesOnOnePage) {
       this.pageData.push(this.dataWithoutMain.slice(i, i+this.slidesOnOnePage));
     }
-    console.log(this.pageData)
   }
+
+  selectMain(selected){
+      this.mainChangeEvent.emit(selected);
+    }
 }
